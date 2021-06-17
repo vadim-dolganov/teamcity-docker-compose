@@ -1,21 +1,22 @@
 version: '3'
 
 services:
-
   postgres:
+    container_name: postgres
     build: ./postgres
     volumes:
-      - "/opt/teamcity/pg_data:/var/lib/postgresql/data"
-      - "/opt/teamcity/pg_backup:/backups"
+      - "/postgres/data:/var/lib/postgresql/data"
+      - "/postgres/backup:/backups"
     env_file: .env
     restart: always
 
   server:
+    container_name: teamcity-server
     image: jetbrains/teamcity-server:${TEAMCITY_VERSION}
     hostname: ${VIRTUAL_HOST}
     volumes:
-      - "/opt/teamcity/data:/data/teamcity_server/datadir"
-      - "/opt/teamcity/logs:/opt/teamcity/logs"
+      - "/teamcity/data:/data/teamcity_server/datadir"
+      - "/teamcity/logs:/opt/teamcity/logs"
     ports:
       - 8111:8111
     depends_on:
@@ -24,6 +25,7 @@ services:
     restart: always
 
   nginx:
+    container_name: proxy-server
     image: nginx
     links:
       - server
@@ -33,3 +35,4 @@ services:
     volumes:
       - "./nginx/teamcity.conf:/etc/nginx/conf.d/teamcity.conf"
     env_file: .env
+    restart: always
