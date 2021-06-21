@@ -15,4 +15,12 @@ build:
 
 down:
 	docker-compose -f $(COMPOSE_FILE) down --rmi all
- 
+
+backup:
+	docker exec -it postgres /usr/local/bin/backup
+
+restore:
+	docker exec -it postgres /usr/local/bin/restore
+
+backup-list:
+	docker exec -it postgres /usr/local/bin/list-backups
