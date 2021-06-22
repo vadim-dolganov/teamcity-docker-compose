@@ -34,5 +34,6 @@ services:
       - "443:443"
     volumes:
       - "./nginx/teamcity.conf:/etc/nginx/conf.d/teamcity.conf"
+      - "./nginx/tls:/etc/nginx/tls"
     env_file: .env
     restart: always
